@@ -3,10 +3,11 @@ import AlertBanner from '@/components/AlertBanner'
 import Header from '@/components/Header'
 import { useAlertSound } from '@/hooks/useAlertSound'
 import { useFarm } from '@/hooks/useFarm'
+import CrisisConsole from '@/sections/CrisisConsole'
 import StatusSection from '@/sections/StatusSection'
 
 function App() {
-  const { state, thresholds, connected, error } = useFarm()
+  const { state, thresholds, connected, error, actionError, setFanMode, toggleCrisis } = useFarm()
   const alerts = state?.alerts ?? []
   const sound = useAlertSound(alerts)
 
@@ -19,9 +20,9 @@ function App() {
         onToggleSound={sound.toggle}
       />
       <main className="mx-auto flex max-w-[1400px] flex-col gap-6 px-6 pb-16">
-        {error && (
+        {(error ?? actionError) && (
           <p role="status" className="rounded-xl border border-warn-400/30 bg-warn-400/10 px-4 py-3 text-sm text-warn-400">
-            {error}
+            {error ?? actionError}
           </p>
         )}
         {state && (
@@ -32,7 +33,8 @@ function App() {
             onToggleSound={sound.toggle}
           />
         )}
-        <StatusSection state={state} thresholds={thresholds} />
+        <StatusSection state={state} thresholds={thresholds} onSetFanMode={setFanMode} />
+        {state && <CrisisConsole activeCrises={state.activeCrises} onToggle={toggleCrisis} />}
       </main>
     </MotionConfig>
   )

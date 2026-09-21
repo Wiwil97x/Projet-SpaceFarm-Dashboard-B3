@@ -3,14 +3,15 @@ import CardSkeleton from '@/components/CardSkeleton'
 import FanCard from '@/components/FanCard'
 import SensorCard from '@/components/SensorCard'
 import { staggerContainer } from '@/lib/motionVariants'
-import type { FarmState, Thresholds } from '@/types/spacefarm'
+import type { FanMode, FarmState, Thresholds } from '@/types/spacefarm'
 
 interface StatusSectionProps {
   state: FarmState | null
   thresholds: Thresholds | null
+  onSetFanMode: (mode: FanMode) => Promise<void>
 }
 
-function StatusSection({ state, thresholds }: StatusSectionProps) {
+function StatusSection({ state, thresholds, onSetFanMode }: StatusSectionProps) {
   if (!state || !thresholds) {
     return (
       <section aria-label="Chargement de l'état de la serre" className="grid gap-4 lg:grid-cols-12">
@@ -57,7 +58,7 @@ function StatusSection({ state, thresholds }: StatusSectionProps) {
           range={thresholds.waterLevel}
           noSignal={safeMode}
         />
-        <FanCard fan={fan} safeMode={safeMode} />
+        <FanCard fan={fan} safeMode={safeMode} onSetMode={onSetFanMode} />
       </div>
     </motion.section>
   )

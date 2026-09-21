@@ -38,29 +38,20 @@ function AlertBanner({ alerts, measures, soundEnabled, onToggleSound }: AlertBan
                 {alerts.length === 1 ? 'Alerte active' : `${alerts.length} alertes actives`}
               </h2>
               <ul role="alert" aria-atomic="false" className="flex flex-col gap-1.5">
-                <AnimatePresence initial={false}>
-                  {sortAlerts(alerts).map((alert) => {
-                    const { title, detail } = formatAlert(alert, measures)
-                    return (
-                      <motion.li
-                        key={alert.id}
-                        layout
-                        initial={{ opacity: 0, x: -8 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0 }}
-                        className="flex flex-wrap items-baseline gap-x-3 text-base"
-                      >
-                        <span className="font-medium text-ink-100">{title}</span>
-                        <span aria-hidden className="font-mono text-sm text-danger-400">
-                          {detail}
-                        </span>
-                        <span className="font-mono text-xs text-ink-500">
-                          depuis {new Date(alert.raisedAt).toLocaleTimeString('fr-FR')}
-                        </span>
-                      </motion.li>
-                    )
-                  })}
-                </AnimatePresence>
+                {sortAlerts(alerts).map((alert) => {
+                  const { title, detail } = formatAlert(alert, measures)
+                  return (
+                    <li key={alert.id} className="flex flex-wrap items-baseline gap-x-3 text-base">
+                      <span className="font-medium text-ink-100">{title}</span>
+                      <span aria-hidden className="font-mono text-sm text-danger-400">
+                        {detail}
+                      </span>
+                      <span className="font-mono text-xs text-ink-500">
+                        depuis {new Date(alert.raisedAt).toLocaleTimeString('fr-FR')}
+                      </span>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           </div>

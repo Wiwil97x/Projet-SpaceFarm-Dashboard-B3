@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { apiClient } from '@/api/createApiClient'
 import { applyEvent } from '@/lib/applyEvent'
-import type { FarmState, ServerEvent, Thresholds } from '@/types/spacefarm'
+import type { CrisisRequest, FanMode, FarmState, ServerEvent, Thresholds } from '@/types/spacefarm'
 
 const RETRY_DELAY_MS = 3000
 const MAX_BUFFERED_EVENTS = 200
@@ -12,6 +12,10 @@ export interface FarmData {
   /** Live channel (WebSocket) status. */
   connected: boolean
   error: string | null
+  /** Last failed command (fan, crisis), cleared by the next successful one. */
+  actionError: string | null
+  setFanMode: (mode: FanMode) => Promise<void>
+  toggleCrisis: (request: CrisisRequest) => Promise<void>
 }
 
 /** Loads the initial snapshot, then keeps it up to date with pushed events. */
@@ -20,6 +24,27 @@ export function useFarm(): FarmData {
   const [thresholds, setThresholds] = useState<Thresholds | null>(null)
   const [connected, setConnected] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [actionError, setActionError] = useState<string | null>(null)
+
+  const setFanMode = useCallback(async (mode: FanMode) => {
+    try {
+      const fan = await apiClient.setFan(mode)
+      setState((previous) => (previous ? { ...previous, fan } : previous))
+      setActionError(null)
+    } catch {
+      setActionError('Commande des ventilateurs impossible')
+    }
+  }, [])
+
+  const toggleCrisis = useCallback(async (request: CrisisRequest) => {
+    try {
+      const activeCrises = await apiClient.triggerCrisis(request)
+      setState((previous) => (previous ? { ...previous, activeCrises } : previous))
+      setActionError(null)
+    } catch {
+      setActionError('Simulation de crise impossible')
+    }
+  }, [])
 
   useEffect(() => {
     let cancelled = false
@@ -61,5 +86,5 @@ export function useFarm(): FarmData {
     }
   }, [])
 
-  return { state, thresholds, connected, error }
+  return { state, thresholds, connected, error, actionError, setFanMode, toggleCrisis }
 }
