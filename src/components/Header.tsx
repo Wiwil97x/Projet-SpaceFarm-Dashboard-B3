@@ -1,16 +1,19 @@
 import { Plant } from '@phosphor-icons/react'
+import SoundToggle from '@/components/SoundToggle'
 import { cn } from '@/lib/cn'
 
 interface HeaderProps {
   connected: boolean
   updatedAt: string | null
+  soundEnabled: boolean
+  onToggleSound: () => void
 }
 
 function formatTime(iso: string): string {
   return new Date(iso).toLocaleTimeString('fr-FR')
 }
 
-function Header({ connected, updatedAt }: HeaderProps) {
+function Header({ connected, updatedAt, soundEnabled, onToggleSound }: HeaderProps) {
   return (
     <header className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-4 px-6 py-6">
       <div className="flex items-center gap-3">
@@ -36,6 +39,7 @@ function Header({ connected, updatedAt }: HeaderProps) {
           {connected ? 'Serveur connecté' : 'Serveur injoignable'}
         </span>
         {updatedAt && <span className="font-mono text-ink-500">Maj {formatTime(updatedAt)}</span>}
+        <SoundToggle enabled={soundEnabled} onToggle={onToggleSound} />
       </div>
     </header>
   )
