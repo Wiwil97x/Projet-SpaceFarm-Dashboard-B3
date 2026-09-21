@@ -4,15 +4,17 @@ export interface SensorMeta {
   label: string
   unit: string
   decimals: number
+  /** Display domain of the gauge, not a threshold. */
+  scale: { min: number; max: number }
 }
 
 export const SENSOR_KEYS: readonly SensorKey[] = ['temperature', 'humidity', 'luminosity', 'waterLevel']
 
 export const SENSOR_META: Record<SensorKey, SensorMeta> = {
-  temperature: { label: 'Température', unit: '°C', decimals: 1 },
-  humidity: { label: 'Humidité', unit: '%', decimals: 0 },
-  luminosity: { label: 'Luminosité', unit: 'lx', decimals: 0 },
-  waterLevel: { label: "Niveau d'eau", unit: '%', decimals: 0 },
+  temperature: { label: 'Température', unit: '°C', decimals: 1, scale: { min: 10, max: 35 } },
+  humidity: { label: 'Humidité', unit: '%', decimals: 0, scale: { min: 0, max: 100 } },
+  luminosity: { label: 'Luminosité', unit: 'lx', decimals: 0, scale: { min: 0, max: 20000 } },
+  waterLevel: { label: "Niveau d'eau", unit: '%', decimals: 0, scale: { min: 0, max: 100 } },
 }
 
 export const DEFAULT_THRESHOLDS: Thresholds = {

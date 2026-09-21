@@ -1,12 +1,23 @@
+import { MotionConfig } from 'framer-motion'
+import Header from '@/components/Header'
+import { useFarm } from '@/hooks/useFarm'
+import StatusSection from '@/sections/StatusSection'
+
 function App() {
+  const { state, thresholds, connected, error } = useFarm()
+
   return (
-    <main className="mx-auto flex min-h-[100dvh] max-w-[1400px] flex-col justify-center gap-2 px-6">
-      <p className="font-mono text-xs uppercase tracking-widest text-accent-400">
-        Horizon 2080
-      </p>
-      <h1 className="text-4xl font-semibold tracking-tight">SpaceFarm</h1>
-      <p className="text-ink-300">Tableau de bord de la serre, en cours de construction.</p>
-    </main>
+    <MotionConfig reducedMotion="user">
+      <Header connected={connected} updatedAt={state?.updatedAt ?? null} />
+      <main className="mx-auto flex max-w-[1400px] flex-col gap-6 px-6 pb-16">
+        {error && (
+          <p role="status" className="rounded-xl border border-warn-400/30 bg-warn-400/10 px-4 py-3 text-sm text-warn-400">
+            {error}
+          </p>
+        )}
+        <StatusSection state={state} thresholds={thresholds} />
+      </main>
+    </MotionConfig>
   )
 }
 
