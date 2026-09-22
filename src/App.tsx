@@ -21,7 +21,7 @@ function App() {
       />
       <main className="mx-auto flex max-w-[1400px] flex-col gap-6 px-6 pb-16">
         {(error ?? actionError) && (
-          <p role="status" className="rounded-xl border border-warn-400/30 bg-warn-400/10 px-4 py-3 text-sm text-warn-400">
+          <p role="status" className="rounded-xl border border-warn/30 bg-warn-soft px-4 py-3 text-sm text-warn-strong">
             {error ?? actionError}
           </p>
         )}

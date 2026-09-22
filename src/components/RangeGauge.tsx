@@ -14,11 +14,10 @@ function toPercent(value: number, scale: { min: number; max: number }): number {
   return Math.min(1, Math.max(0, ratio)) * 100
 }
 
-/** Bar filled up to the value, with the allowed band drawn as a bracket behind it. */
+/** Bar filled up to the value. The allowed band is marked by two tick marks, like a measurement instrument. */
 function RangeGauge({ label, value, range, scale, fillClassName }: RangeGaugeProps) {
-  const bandStart = range.min === null ? 0 : toPercent(range.min, scale)
-  const bandEnd = range.max === null ? 100 : toPercent(range.max, scale)
-  const hasBand = range.min !== null || range.max !== null
+  const bandStart = range.min === null ? null : toPercent(range.min, scale)
+  const bandEnd = range.max === null ? null : toPercent(range.max, scale)
   const fill = value === null ? 0 : toPercent(value, scale) / 100
 
   return (
@@ -28,15 +27,9 @@ function RangeGauge({ label, value, range, scale, fillClassName }: RangeGaugePro
       aria-valuemin={scale.min}
       aria-valuemax={scale.max}
       aria-valuenow={value ?? undefined}
-      className="relative h-3 w-full rounded-full bg-space-800"
+      className="relative h-2.5 w-full rounded-full bg-surface-sunken"
     >
-      {hasBand && (
-        <div
-          className="absolute inset-y-0 rounded-full border border-ink-300/30 bg-ink-100/5"
-          style={{ left: `${bandStart}%`, width: `${bandEnd - bandStart}%` }}
-        />
-      )}
-      <div className="absolute inset-x-0 inset-y-1 overflow-hidden rounded-full">
+      <div className="absolute inset-x-0 inset-y-0.5 overflow-hidden rounded-full">
         <div
           className={cn(
             'h-full w-full origin-left rounded-full transition-transform duration-700 ease-out',
@@ -45,6 +38,20 @@ function RangeGauge({ label, value, range, scale, fillClassName }: RangeGaugePro
           style={{ transform: `scaleX(${fill})` }}
         />
       </div>
+      {bandStart !== null && (
+        <span
+          aria-hidden
+          className="absolute -top-1 h-[calc(100%+8px)] w-px bg-line-strong"
+          style={{ left: `${bandStart}%` }}
+        />
+      )}
+      {bandEnd !== null && (
+        <span
+          aria-hidden
+          className="absolute -top-1 h-[calc(100%+8px)] w-px bg-line-strong"
+          style={{ left: `${bandEnd}%` }}
+        />
+      )}
     </div>
   )
 }

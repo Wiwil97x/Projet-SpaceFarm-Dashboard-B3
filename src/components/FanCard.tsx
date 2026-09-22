@@ -35,21 +35,21 @@ function FanCard({ fan, safeMode, onSetMode, className }: FanCardProps) {
       variants={riseIn}
       aria-label="Ventilateurs"
       className={cn(
-        'flex h-full flex-col justify-between gap-6 rounded-2xl border border-space-700/70 bg-space-900 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]',
+        'flex h-full flex-col justify-between gap-6 rounded-xl border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(18,21,15,0.04),0_10px_24px_-16px_rgba(18,21,15,0.16)]',
         className,
       )}
     >
       <header className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5 text-ink-300">
+        <div className="flex items-center gap-2.5 text-ink-600">
           <Fan
             size={22}
             weight="regular"
             aria-hidden
-            className={cn(fan.running && 'animate-spin text-accent-400 [animation-duration:1.4s]')}
+            className={cn(fan.running && 'animate-spin text-accent [animation-duration:1.4s]')}
           />
           <h2 className="text-base font-medium">Ventilateurs</h2>
         </div>
-        <span className="rounded-full border border-space-600 px-2.5 py-1 text-xs font-medium uppercase tracking-wider text-ink-300">
+        <span className="rounded-full border border-line-strong px-2.5 py-1 text-xs font-medium uppercase tracking-wider text-ink-600">
           {modeLabel}
         </span>
       </header>
@@ -57,13 +57,13 @@ function FanCard({ fan, safeMode, onSetMode, className }: FanCardProps) {
       <p
         className={cn(
           'text-4xl font-semibold leading-none tracking-tight',
-          fan.running ? 'text-accent-400' : 'text-ink-100',
+          fan.running ? 'text-accent' : 'text-ink-900',
         )}
       >
         {fan.running ? 'En marche' : "À l'arrêt"}
       </p>
 
-      <p className="text-sm text-ink-500">
+      <p className="text-sm text-ink-400">
         {safeMode
           ? 'Mode sûr : ventilation minimale forcée'
           : fan.mode === 'auto'
@@ -74,7 +74,7 @@ function FanCard({ fan, safeMode, onSetMode, className }: FanCardProps) {
       <div
         role="radiogroup"
         aria-label="Mode des ventilateurs"
-        className="relative grid grid-cols-3 gap-1 rounded-xl bg-space-800 p-1"
+        className="relative grid grid-cols-3 gap-1 rounded-xl bg-surface-sunken p-1"
       >
         {MODE_OPTIONS.map(({ mode, label }) => {
           const selected = fan.mode === mode
@@ -88,14 +88,14 @@ function FanCard({ fan, safeMode, onSetMode, className }: FanCardProps) {
               onClick={() => void handleSelect(mode)}
               className={cn(
                 'relative h-10 cursor-pointer rounded-lg text-sm font-medium transition-colors duration-200 active:scale-[0.98] disabled:cursor-wait',
-                selected ? 'text-ink-100' : 'text-ink-500 hover:text-ink-300',
+                selected ? 'text-accent-strong' : 'text-ink-400 hover:text-ink-600',
               )}
             >
               {selected && (
                 <motion.span
                   layoutId="fan-mode-pill"
                   transition={{ type: 'spring', stiffness: 400, damping: 32 }}
-                  className="absolute inset-0 rounded-lg bg-space-600"
+                  className="absolute inset-0 rounded-lg bg-surface shadow-[0_1px_3px_rgba(18,21,15,0.12)]"
                 />
               )}
               <span className="relative">{label}</span>

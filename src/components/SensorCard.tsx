@@ -14,17 +14,18 @@ type CardStatus = SensorStatus | 'nosignal'
 interface StatusStyle {
   label: string
   text: string
-  card: string
+  bar: string
   fill: string
 }
 
+/** Each status gets a slim top indicator bar rather than a fully tinted card, like a status LED on an instrument panel. */
 const STATUS_STYLE: Record<CardStatus, StatusStyle> = {
-  ok: { label: 'Dans la plage', text: 'text-accent-400', card: 'border-space-700/70', fill: 'bg-accent-400' },
-  near: { label: 'Proche du seuil', text: 'text-warn-400', card: 'border-warn-400/30', fill: 'bg-warn-400' },
-  high: { label: 'Trop élevé', text: 'text-danger-400', card: 'border-danger-400/50 bg-danger-600/10', fill: 'bg-danger-400' },
-  low: { label: 'Trop bas', text: 'text-danger-400', card: 'border-danger-400/50 bg-danger-600/10', fill: 'bg-danger-400' },
-  none: { label: 'Sans seuil', text: 'text-ink-300', card: 'border-space-700/70', fill: 'bg-ink-300' },
-  nosignal: { label: 'Sans signal', text: 'text-ink-500', card: 'border-space-700/70 opacity-60', fill: 'bg-ink-500' },
+  ok: { label: 'Dans la plage', text: 'text-accent', bar: 'bg-accent', fill: 'bg-accent' },
+  near: { label: 'Proche du seuil', text: 'text-warn-strong', bar: 'bg-warn', fill: 'bg-warn' },
+  high: { label: 'Trop élevé', text: 'text-danger-strong', bar: 'bg-danger', fill: 'bg-danger' },
+  low: { label: 'Trop bas', text: 'text-danger-strong', bar: 'bg-danger', fill: 'bg-danger' },
+  none: { label: 'Sans seuil', text: 'text-ink-600', bar: 'bg-line-strong', fill: 'bg-ink-400' },
+  nosignal: { label: 'Sans signal', text: 'text-ink-400', bar: 'bg-line-strong', fill: 'bg-ink-400' },
 }
 
 const SENSOR_ICON: Record<SensorKey, Icon> = {
@@ -58,14 +59,16 @@ function SensorCard({ sensor, value, range, noSignal, size = 'md', className }: 
       variants={riseIn}
       aria-label={meta.label}
       className={cn(
-        'flex h-full flex-col justify-between gap-6 rounded-2xl border bg-space-900 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)] transition-colors duration-500',
-        isLarge && 'sm:p-8',
-        status.card,
+        'relative flex h-full flex-col justify-between gap-6 overflow-hidden rounded-xl border border-line bg-surface p-6 shadow-[0_1px_2px_rgba(18,21,15,0.04),0_10px_24px_-16px_rgba(18,21,15,0.16)] transition-opacity duration-500',
+        isLarge && 'corner-ticks sm:p-8',
+        statusKey === 'nosignal' && 'opacity-70',
         className,
       )}
     >
+      <span aria-hidden className={cn('absolute inset-x-0 top-0 h-[3px]', status.bar)} />
+
       <header className="flex items-center justify-between gap-3">
-        <div className="flex items-center gap-2.5 text-ink-300">
+        <div className="flex items-center gap-2.5 text-ink-600">
           <SensorIcon size={isLarge ? 26 : 22} weight="regular" aria-hidden />
           <h2 className={cn('font-medium', isLarge ? 'text-lg' : 'text-base')}>{meta.label}</h2>
         </div>
@@ -79,11 +82,11 @@ function SensorCard({ sensor, value, range, noSignal, size = 'md', className }: 
         className={cn(
           'flex items-baseline gap-2 font-semibold leading-none tracking-tighter tabular-nums',
           isLarge ? 'text-7xl sm:text-8xl' : 'text-5xl',
-          statusKey === 'nosignal' ? 'text-ink-500' : 'text-ink-100',
+          statusKey === 'nosignal' ? 'text-ink-400' : 'text-ink-900',
         )}
       >
         {value === null ? '--' : formatValue(sensor, value)}
-        <span className={cn('font-medium text-ink-300', isLarge ? 'text-3xl' : 'text-xl')}>{meta.unit}</span>
+        <span className={cn('font-medium text-ink-600', isLarge ? 'text-3xl' : 'text-xl')}>{meta.unit}</span>
       </p>
 
       <div className="flex flex-col gap-3">
@@ -94,8 +97,8 @@ function SensorCard({ sensor, value, range, noSignal, size = 'md', className }: 
           scale={meta.scale}
           fillClassName={status.fill}
         />
-        <p className="text-sm text-ink-500">
-          Plage attendue : <span className="font-mono text-ink-300">{formatRange(sensor, range)}</span>
+        <p className="text-sm text-ink-400">
+          Plage attendue : <span className="font-mono text-ink-600">{formatRange(sensor, range)}</span>
         </p>
       </div>
     </motion.article>

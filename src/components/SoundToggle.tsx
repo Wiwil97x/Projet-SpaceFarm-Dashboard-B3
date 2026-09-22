@@ -19,8 +19,8 @@ function SoundToggle({ enabled, onToggle, className }: SoundToggleProps) {
       className={cn(
         'flex h-10 cursor-pointer items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors duration-200 active:scale-[0.98]',
         enabled
-          ? 'border-accent-500/40 bg-accent-500/10 text-accent-400 hover:bg-accent-500/15'
-          : 'border-space-600 text-ink-300 hover:border-ink-500 hover:text-ink-100',
+          ? 'border-accent/30 bg-accent-soft text-accent-strong hover:bg-accent-soft/70'
+          : 'border-line-strong text-ink-600 hover:border-ink-600 hover:bg-surface-sunken hover:text-ink-900',
         className,
       )}
     >
