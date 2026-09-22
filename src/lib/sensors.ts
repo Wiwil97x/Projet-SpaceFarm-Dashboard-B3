@@ -23,3 +23,10 @@ export const DEFAULT_THRESHOLDS: Thresholds = {
   luminosity: { min: null, max: null },
   waterLevel: { min: 30, max: null },
 }
+
+export const HISTORY_RANGES: readonly { value: import('@/types/spacefarm').HistoryRange; label: string }[] = [
+  { value: '15m', label: '15 min' },
+  { value: '1h', label: '1 h' },
+  { value: '6h', label: '6 h' },
+  { value: '24h', label: '24 h' },
+]
