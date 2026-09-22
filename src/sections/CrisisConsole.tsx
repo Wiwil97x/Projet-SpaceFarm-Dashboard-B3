@@ -9,7 +9,7 @@ const CRISIS_ICON: Record<CrisisType, Icon> = {
   overheat: Fire,
   earth_cut: WifiSlash,
   sensor_mute: Plugs,
-  low_water: Drop,
+  low_moisture: Drop,
 }
 
 // The sensor cut is set apart below: it takes the whole ESP32 down, unlike the other three which

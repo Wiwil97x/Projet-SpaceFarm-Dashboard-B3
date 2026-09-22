@@ -15,9 +15,9 @@ export function formatAlert(alert: FarmAlert, measures: Measures): AlertText {
   }
 
   const { label, unit } = SENSOR_META[sensor]
-  const feminine = sensor !== 'waterLevel'
+  // All four measures are feminine nouns (température, humidité, luminosité, humidité du sol).
   const isHigh = alert.kind === 'above_max'
-  const adjective = isHigh ? (feminine ? 'élevée' : 'élevé') : feminine ? 'basse' : 'bas'
+  const adjective = isHigh ? 'élevée' : 'basse'
 
   const value = measures[sensor] ?? alert.value
   const measured = value === null ? '--' : formatValue(sensor, value)

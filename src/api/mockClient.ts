@@ -29,13 +29,13 @@ const BASELINE: Record<SensorKey, number> = {
   temperature: 21.5,
   humidity: 60,
   luminosity: 12_400,
-  waterLevel: 72,
+  soilMoisture: 72,
 }
-const NOISE: Record<SensorKey, number> = { temperature: 0.15, humidity: 0.9, luminosity: 120, waterLevel: 0.15 }
-const SWING: Record<SensorKey, number> = { temperature: 1.2, humidity: 4, luminosity: 300, waterLevel: 1.5 }
+const NOISE: Record<SensorKey, number> = { temperature: 0.15, humidity: 0.9, luminosity: 120, soilMoisture: 0.15 }
+const SWING: Record<SensorKey, number> = { temperature: 1.2, humidity: 4, luminosity: 300, soilMoisture: 1.5 }
 
 const OVERHEAT_TARGET = 29
-const LOW_WATER_TARGET = 12
+const LOW_MOISTURE_TARGET = 12
 const FAN_COOLING_RATE = 0.12
 const FAN_COOLING_FLOOR = 20
 const FAN_HYSTERESIS = 1
@@ -102,7 +102,7 @@ function downsample(points: HistoryPoint[]): HistoryPoint[] {
 /**
  * Fake back-end: a small greenhouse simulation that starts ticking as soon as it is created.
  * Crises: overheat (temperature climbs, auto fan cools), earth_cut (messages pile up then resync),
- * sensor_mute (no more data, alert + safe mode), low_water (water level drops below its minimum).
+ * sensor_mute (no more data, alert + safe mode), low_moisture (soil moisture drops below its minimum).
  */
 export function createMockClient(options: MockOptions = {}): MockClient {
   const { tickMs = 2000, silentAfterMs = 8000 } = options
@@ -112,13 +112,13 @@ export function createMockClient(options: MockOptions = {}): MockClient {
     temperature: Date.now(),
     humidity: Date.now(),
     luminosity: Date.now(),
-    waterLevel: Date.now(),
+    soilMoisture: Date.now(),
   }
   const history: Record<SensorKey, HistoryPoint[]> = {
     temperature: seedHistory('temperature'),
     humidity: seedHistory('humidity'),
     luminosity: seedHistory('luminosity'),
-    waterLevel: seedHistory('waterLevel'),
+    soilMoisture: seedHistory('soilMoisture'),
   }
 
   let thresholds: Thresholds = structuredClone(DEFAULT_THRESHOLDS)
@@ -144,9 +144,9 @@ export function createMockClient(options: MockOptions = {}): MockClient {
       if (crises.has('overheat')) target = OVERHEAT_TARGET
       if (fan.running) cooling = FAN_COOLING_RATE * (current - FAN_COOLING_FLOOR)
     }
-    if (sensor === 'waterLevel') {
+    if (sensor === 'soilMoisture') {
       pull = 0.12
-      if (crises.has('low_water')) target = LOW_WATER_TARGET
+      if (crises.has('low_moisture')) target = LOW_MOISTURE_TARGET
     }
 
     const next = current + (target - current) * pull - cooling + jitter(NOISE[sensor])
@@ -188,7 +188,7 @@ export function createMockClient(options: MockOptions = {}): MockClient {
         add({ kind: 'above_max', sensor, severity: 'warning', value, limit: max })
       }
       if (min !== null && values[sensor] < min) {
-        const severity = sensor === 'waterLevel' ? 'critical' : 'warning'
+        const severity = sensor === 'soilMoisture' ? 'critical' : 'warning'
         add({ kind: 'below_min', sensor, severity, value, limit: min })
       }
     })

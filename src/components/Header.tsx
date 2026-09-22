@@ -26,7 +26,7 @@ function Header({ connected, updatedAt, earthLink, soundEnabled, onToggleSound }
           </span>
           <div>
             <h1 className="text-2xl font-semibold leading-none tracking-tight text-ink-900">SpaceFarm</h1>
-            <p className="mt-1 text-sm text-ink-400">Serre hydroponique autonome</p>
+            <p className="mt-1 text-sm text-ink-400">Serre connectée autonome</p>
           </div>
         </div>
 

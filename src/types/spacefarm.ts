@@ -1,6 +1,6 @@
 /** Shared types for the SpaceFarm API contract (to validate with the back). All dates are ISO 8601 strings. */
 
-export type SensorKey = 'temperature' | 'humidity' | 'luminosity' | 'waterLevel'
+export type SensorKey = 'temperature' | 'humidity' | 'luminosity' | 'soilMoisture'
 
 export type Measures = Record<SensorKey, number | null>
 
@@ -42,7 +42,7 @@ export interface EarthLink {
   pendingMessages: number
 }
 
-export type CrisisType = 'overheat' | 'earth_cut' | 'sensor_mute' | 'low_water'
+export type CrisisType = 'overheat' | 'earth_cut' | 'sensor_mute' | 'low_moisture'
 
 export interface FarmState {
   measures: Measures

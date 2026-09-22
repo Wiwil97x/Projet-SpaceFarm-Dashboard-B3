@@ -52,9 +52,9 @@ function StatusSection({ state, thresholds }: StatusSectionProps) {
           noSignal={safeMode}
         />
         <SensorCard
-          sensor="waterLevel"
-          value={measures.waterLevel}
-          range={thresholds.waterLevel}
+          sensor="soilMoisture"
+          value={measures.soilMoisture}
+          range={thresholds.soilMoisture}
           noSignal={safeMode}
         />
         <FanCard fan={fan} safeMode={safeMode} />
