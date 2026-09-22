@@ -9,7 +9,7 @@ export const CRISIS_TYPES: readonly CrisisType[] = ['overheat', 'earth_cut', 'se
 
 export const CRISIS_META: Record<CrisisType, CrisisMeta> = {
   overheat: { label: 'Surchauffe', description: 'La serre chauffe, les ventilateurs doivent réagir' },
-  earth_cut: { label: 'Coupure Terre', description: 'Lien coupé, les messages sont mis en attente' },
+  earth_cut: { label: 'Coupure liaison spatiale', description: 'Signal coupé, les messages sont mis en attente' },
   sensor_mute: { label: 'Capteur muet', description: "Plus aucune donnée de l'ESP32" },
   low_water: { label: "Niveau d'eau bas", description: 'Le réservoir se vide sous le minimum' },
 }

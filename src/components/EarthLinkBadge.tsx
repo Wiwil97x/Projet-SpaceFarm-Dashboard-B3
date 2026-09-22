@@ -21,7 +21,7 @@ function EarthLinkBadge({ earthLink, className }: EarthLinkBadgeProps) {
       )}
     >
       <Icon size={16} weight="regular" aria-hidden />
-      Lien Terre {connected ? 'connecté' : 'coupé'}
+      Liaison spatiale {connected ? 'connectée' : 'coupée'}
       {pendingMessages > 0 && (
         <span
           className={cn(
