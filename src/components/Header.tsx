@@ -1,10 +1,13 @@
 import { Plant } from '@phosphor-icons/react'
+import EarthLinkBadge from '@/components/EarthLinkBadge'
 import SoundToggle from '@/components/SoundToggle'
 import { cn } from '@/lib/cn'
+import type { EarthLink } from '@/types/spacefarm'
 
 interface HeaderProps {
   connected: boolean
   updatedAt: string | null
+  earthLink: EarthLink | null
   soundEnabled: boolean
   onToggleSound: () => void
 }
@@ -13,7 +16,7 @@ function formatTime(iso: string): string {
   return new Date(iso).toLocaleTimeString('fr-FR')
 }
 
-function Header({ connected, updatedAt, soundEnabled, onToggleSound }: HeaderProps) {
+function Header({ connected, updatedAt, earthLink, soundEnabled, onToggleSound }: HeaderProps) {
   return (
     <header className="border-b border-line">
       <div className="mx-auto flex max-w-[1400px] flex-wrap items-center justify-between gap-4 px-6 py-6">
@@ -40,6 +43,7 @@ function Header({ connected, updatedAt, soundEnabled, onToggleSound }: HeaderPro
             {connected ? 'Serveur connecté' : 'Serveur injoignable'}
           </span>
           {updatedAt && <span className="font-mono text-ink-400">Maj {formatTime(updatedAt)}</span>}
+          {earthLink && <EarthLinkBadge earthLink={earthLink} />}
           <SoundToggle enabled={soundEnabled} onToggle={onToggleSound} />
         </div>
       </div>

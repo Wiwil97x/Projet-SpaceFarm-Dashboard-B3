@@ -16,6 +16,7 @@ function App() {
       <Header
         connected={connected}
         updatedAt={state?.updatedAt ?? null}
+        earthLink={state?.earthLink ?? null}
         soundEnabled={sound.enabled}
         onToggleSound={sound.toggle}
       />
