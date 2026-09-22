@@ -1,34 +1,19 @@
 import { Fan } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
-import { useState } from 'react'
 import { cn } from '@/lib/cn'
 import { riseIn } from '@/lib/motionVariants'
-import type { FanMode, FanState } from '@/types/spacefarm'
+import type { FanState } from '@/types/spacefarm'
 
 interface FanCardProps {
   fan: FanState
   /** Safe mode: the device is silent and ventilation is forced to its minimum. */
   safeMode: boolean
-  onSetMode: (mode: FanMode) => Promise<void>
   className?: string
 }
 
-const MODE_OPTIONS: { mode: FanMode; label: string }[] = [
-  { mode: 'auto', label: 'Auto' },
-  { mode: 'on', label: 'Marche' },
-  { mode: 'off', label: 'Arrêt' },
-]
-
-function FanCard({ fan, safeMode, onSetMode, className }: FanCardProps) {
-  const [busy, setBusy] = useState(false)
+/** Read-only ventilation status, grouped with the other sensor cards. The command itself lives in the control sidebar. */
+function FanCard({ fan, safeMode, className }: FanCardProps) {
   const modeLabel = fan.mode === 'auto' ? 'Automatique' : 'Manuel'
-
-  const handleSelect = async (mode: FanMode) => {
-    if (busy || mode === fan.mode) return
-    setBusy(true)
-    await onSetMode(mode)
-    setBusy(false)
-  }
 
   return (
     <motion.article
@@ -70,39 +55,6 @@ function FanCard({ fan, safeMode, onSetMode, className }: FanCardProps) {
             ? 'Piloté par le seuil de température'
             : 'Commande manuelle active'}
       </p>
-
-      <div
-        role="radiogroup"
-        aria-label="Mode des ventilateurs"
-        className="relative grid grid-cols-3 gap-1 rounded-xl bg-surface-sunken p-1"
-      >
-        {MODE_OPTIONS.map(({ mode, label }) => {
-          const selected = fan.mode === mode
-          return (
-            <button
-              key={mode}
-              type="button"
-              role="radio"
-              aria-checked={selected}
-              disabled={busy}
-              onClick={() => void handleSelect(mode)}
-              className={cn(
-                'relative h-10 cursor-pointer rounded-lg text-sm font-medium transition-colors duration-200 active:scale-[0.98] disabled:cursor-wait',
-                selected ? 'text-accent-strong' : 'text-ink-400 hover:text-ink-600',
-              )}
-            >
-              {selected && (
-                <motion.span
-                  layoutId="fan-mode-pill"
-                  transition={{ type: 'spring', stiffness: 400, damping: 32 }}
-                  className="absolute inset-0 rounded-lg bg-surface shadow-[0_1px_3px_rgba(18,21,15,0.12)]"
-                />
-              )}
-              <span className="relative">{label}</span>
-            </button>
-          )
-        })}
-      </div>
     </motion.article>
   )
 }

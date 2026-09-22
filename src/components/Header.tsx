@@ -30,7 +30,7 @@ function Header({ connected, updatedAt, earthLink, soundEnabled, onToggleSound }
           </div>
         </div>
 
-        <div className="flex items-center gap-4 text-sm text-ink-600">
+        <div className="flex min-w-0 flex-wrap items-center gap-x-4 gap-y-2 text-sm text-ink-600">
           <span className="flex items-center gap-2">
             <span className="relative flex size-2.5" aria-hidden>
               {connected && (
@@ -42,7 +42,12 @@ function Header({ connected, updatedAt, earthLink, soundEnabled, onToggleSound }
             </span>
             {connected ? 'Serveur connecté' : 'Serveur injoignable'}
           </span>
-          {updatedAt && <span className="font-mono text-ink-400">Maj {formatTime(updatedAt)}</span>}
+          {/*
+            Hidden below `sm`: mixed with the flex-display badges next to it, this plain text span
+            was the one item that kept the row from wrapping cleanly right when wrapping first
+            becomes necessary. It is also the least essential item here (redundant with the live dot).
+          */}
+          {updatedAt && <span className="hidden font-mono text-ink-400 sm:inline">Maj {formatTime(updatedAt)}</span>}
           {earthLink && <EarthLinkBadge earthLink={earthLink} />}
           <SoundToggle enabled={soundEnabled} onToggle={onToggleSound} />
         </div>

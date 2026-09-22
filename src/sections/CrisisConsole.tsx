@@ -21,10 +21,15 @@ const SensorMuteIcon = CRISIS_ICON.sensor_mute
 interface CrisisConsoleProps {
   activeCrises: CrisisType[]
   onToggle: (request: CrisisRequest) => Promise<void>
+  /**
+   * True when rendered in the narrow control sidebar. Uses fixed single-column classes instead of
+   * `sm:`/breakpoint utilities, which would fire on viewport width, not on this column's own width.
+   */
+  compact?: boolean
 }
 
 /** Demo tool: simulates incidents so the jury can watch the farm react. */
-function CrisisConsole({ activeCrises, onToggle }: CrisisConsoleProps) {
+function CrisisConsole({ activeCrises, onToggle, compact = false }: CrisisConsoleProps) {
   const [busy, setBusy] = useState(false)
   const sensorMuted = activeCrises.includes('sensor_mute')
 
@@ -59,7 +64,7 @@ function CrisisConsole({ activeCrises, onToggle }: CrisisConsoleProps) {
         </button>
       </header>
 
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className={cn('grid gap-3', compact ? 'grid-cols-1' : 'sm:grid-cols-3')}>
         {GRID_CRISES.map((type) => {
           const { label, description } = CRISIS_META[type]
           const CrisisIcon = CRISIS_ICON[type]
@@ -104,7 +109,12 @@ function CrisisConsole({ activeCrises, onToggle }: CrisisConsoleProps) {
         })}
       </div>
 
-      <div className="flex flex-col gap-3 rounded-lg border-2 border-danger bg-danger-soft p-4 sm:flex-row sm:items-center sm:justify-between">
+      <div
+        className={cn(
+          'flex flex-col gap-3 rounded-lg border-2 border-danger bg-danger-soft p-4',
+          !compact && 'sm:flex-row sm:items-center sm:justify-between',
+        )}
+      >
         <div className="flex items-center gap-3">
           <span className="grid size-10 shrink-0 place-items-center rounded-full bg-danger text-white">
             <SensorMuteIcon size={20} weight="fill" aria-hidden />
@@ -123,6 +133,7 @@ function CrisisConsole({ activeCrises, onToggle }: CrisisConsoleProps) {
           className={cn(
             'flex h-11 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold text-white transition-colors duration-200 active:scale-[0.98] disabled:cursor-wait disabled:opacity-60',
             sensorMuted ? 'bg-ink-900 hover:bg-ink-600' : 'bg-danger hover:bg-danger-strong',
+            compact && 'w-full',
           )}
         >
           {sensorMuted ? 'Reconnecter les capteurs' : 'Déconnecter tous les capteurs'}
