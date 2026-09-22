@@ -16,6 +16,8 @@ export interface FarmData {
   actionError: string | null
   setFanMode: (mode: FanMode) => Promise<void>
   toggleCrisis: (request: CrisisRequest) => Promise<void>
+  /** Throws with a French message on failure (invalid range, network), so the form can show it inline. */
+  saveThresholds: (next: Thresholds) => Promise<void>
 }
 
 /** Loads the initial snapshot, then keeps it up to date with pushed events. */
@@ -44,6 +46,17 @@ export function useFarm(): FarmData {
     } catch {
       setActionError('Simulation de crise impossible')
     }
+  }, [])
+
+  const saveThresholds = useCallback(async (next: Thresholds) => {
+    let saved: Thresholds
+    try {
+      saved = await apiClient.putThresholds(next)
+    } catch (cause) {
+      const message = cause instanceof Error ? cause.message : 'Enregistrement des seuils impossible'
+      throw new Error(message)
+    }
+    setThresholds(saved)
   }, [])
 
   useEffect(() => {
@@ -86,5 +99,5 @@ export function useFarm(): FarmData {
     }
   }, [])
 
-  return { state, thresholds, connected, error, actionError, setFanMode, toggleCrisis }
+  return { state, thresholds, connected, error, actionError, setFanMode, toggleCrisis, saveThresholds }
 }

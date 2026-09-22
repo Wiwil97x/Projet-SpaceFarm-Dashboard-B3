@@ -1,11 +1,10 @@
-import { Drop, Sun, Thermometer, Waves } from '@phosphor-icons/react'
-import type { Icon } from '@phosphor-icons/react'
 import { motion } from 'framer-motion'
 import RangeGauge from '@/components/RangeGauge'
 import { cn } from '@/lib/cn'
 import { formatRange, formatValue } from '@/lib/formatValue'
 import { getSensorStatus, type SensorStatus } from '@/lib/getSensorStatus'
 import { riseIn } from '@/lib/motionVariants'
+import { SENSOR_ICON } from '@/lib/sensorIcons'
 import { SENSOR_META } from '@/lib/sensors'
 import type { SensorKey, ThresholdRange } from '@/types/spacefarm'
 
@@ -26,13 +25,6 @@ const STATUS_STYLE: Record<CardStatus, StatusStyle> = {
   low: { label: 'Trop bas', text: 'text-danger-strong', bar: 'bg-danger', fill: 'bg-danger' },
   none: { label: 'Sans seuil', text: 'text-ink-600', bar: 'bg-line-strong', fill: 'bg-ink-400' },
   nosignal: { label: 'Sans signal', text: 'text-ink-400', bar: 'bg-line-strong', fill: 'bg-ink-400' },
-}
-
-const SENSOR_ICON: Record<SensorKey, Icon> = {
-  temperature: Thermometer,
-  humidity: Drop,
-  luminosity: Sun,
-  waterLevel: Waves,
 }
 
 interface SensorCardProps {
