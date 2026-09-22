@@ -12,6 +12,12 @@ const CRISIS_ICON: Record<CrisisType, Icon> = {
   low_water: Drop,
 }
 
+// The sensor cut is set apart below: it takes the whole ESP32 down, unlike the other three which
+// stay local to one measure.
+const GRID_CRISES = CRISIS_TYPES.filter((type) => type !== 'sensor_mute')
+const SENSOR_MUTE_META = CRISIS_META.sensor_mute
+const SensorMuteIcon = CRISIS_ICON.sensor_mute
+
 interface CrisisConsoleProps {
   activeCrises: CrisisType[]
   onToggle: (request: CrisisRequest) => Promise<void>
@@ -20,6 +26,7 @@ interface CrisisConsoleProps {
 /** Demo tool: simulates incidents so the jury can watch the farm react. */
 function CrisisConsole({ activeCrises, onToggle }: CrisisConsoleProps) {
   const [busy, setBusy] = useState(false)
+  const sensorMuted = activeCrises.includes('sensor_mute')
 
   const run = async (requests: CrisisRequest[]) => {
     if (busy) return
@@ -52,8 +59,8 @@ function CrisisConsole({ activeCrises, onToggle }: CrisisConsoleProps) {
         </button>
       </header>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {CRISIS_TYPES.map((type) => {
+      <div className="grid gap-3 sm:grid-cols-3">
+        {GRID_CRISES.map((type) => {
           const { label, description } = CRISIS_META[type]
           const CrisisIcon = CRISIS_ICON[type]
           const active = activeCrises.includes(type)
@@ -95,6 +102,31 @@ function CrisisConsole({ activeCrises, onToggle }: CrisisConsoleProps) {
             </button>
           )
         })}
+      </div>
+
+      <div className="flex flex-col gap-3 rounded-lg border-2 border-danger bg-danger-soft p-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <span className="grid size-10 shrink-0 place-items-center rounded-full bg-danger text-white">
+            <SensorMuteIcon size={20} weight="fill" aria-hidden />
+          </span>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-danger-strong">Action critique</p>
+            <p className="text-base font-medium text-ink-900">{SENSOR_MUTE_META.label}</p>
+            <p className="text-sm text-ink-600">{SENSOR_MUTE_META.description}</p>
+          </div>
+        </div>
+        <button
+          type="button"
+          aria-pressed={sensorMuted}
+          disabled={busy}
+          onClick={() => void run([{ type: 'sensor_mute', active: !sensorMuted }])}
+          className={cn(
+            'flex h-11 shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg px-5 text-sm font-semibold text-white transition-colors duration-200 active:scale-[0.98] disabled:cursor-wait disabled:opacity-60',
+            sensorMuted ? 'bg-ink-900 hover:bg-ink-600' : 'bg-danger hover:bg-danger-strong',
+          )}
+        >
+          {sensorMuted ? 'Reconnecter les capteurs' : 'Déconnecter tous les capteurs'}
+        </button>
       </div>
     </section>
   )
