@@ -5,7 +5,7 @@ Interface web (dashboard) du projet SpaceFarm, Workshop EPSI B3 "Horizon 2080", 
 ## Contexte projet
 
 - Serre connectée classique (en terre, pas hydroponique) pour un vaisseau interstellaire de l'ESA, coupé de la Terre (pas de ravitaillement, pas de communication temps réel).
-- Chaîne : capteurs ESP32 -> MQTT (TLS) -> serveur local -> PostgreSQL -> régulation des ventilateurs + alertes. Fonctionne sans Internet, resynchronise au retour du lien.
+- Chaîne : capteurs reliés au Raspberry Pi (pas d'ESP32) -> MQTT (TLS) -> serveur local -> PostgreSQL -> régulation des ventilateurs + alertes. Fonctionne sans Internet, resynchronise au retour du lien.
 - Équipe de 5. Ce dépôt = FRONT uniquement (Willem). Back (API + WebSocket) = Nathan. Le front avance avec de fausses données (mock) tant que le back n'est pas prêt.
 - Cahier des charges complet : dossier `docs/` (vide au départ, à compléter si le PDF est ajouté).
 - Jury : démo projetée en direct, 5 min de présentation + 5 min de questions. Le design doit rester lisible de loin.

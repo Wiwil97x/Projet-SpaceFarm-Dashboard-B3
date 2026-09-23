@@ -19,7 +19,7 @@ export interface FanState {
 
 export type AlertKind = 'above_max' | 'below_min' | 'sensor_silent'
 
-/** 'device' = the ESP32 itself (silent sensor), not a single measure. */
+/** 'device' = the Raspberry Pi itself (silent sensor), not a single measure. */
 export type AlertSensor = SensorKey | 'device'
 
 export type AlertSeverity = 'warning' | 'critical'
@@ -50,7 +50,7 @@ export interface FarmState {
   fan: FanState
   alerts: FarmAlert[]
   earthLink: EarthLink
-  /** True when the ESP32 is silent and the farm falls back to minimal ventilation. */
+  /** True when the Raspberry Pi is silent and the farm falls back to minimal ventilation. */
   safeMode: boolean
   activeCrises: CrisisType[]
   updatedAt: string

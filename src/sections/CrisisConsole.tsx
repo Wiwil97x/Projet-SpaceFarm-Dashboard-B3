@@ -12,8 +12,8 @@ const CRISIS_ICON: Record<CrisisType, Icon> = {
   low_moisture: Drop,
 }
 
-// The sensor cut is set apart below: it takes the whole ESP32 down, unlike the other three which
-// stay local to one measure.
+// The sensor cut is set apart below: it takes the whole Raspberry Pi down, unlike the other three
+// which stay local to one measure.
 const GRID_CRISES = CRISIS_TYPES.filter((type) => type !== 'sensor_mute')
 const SENSOR_MUTE_META = CRISIS_META.sensor_mute
 const SensorMuteIcon = CRISIS_ICON.sensor_mute

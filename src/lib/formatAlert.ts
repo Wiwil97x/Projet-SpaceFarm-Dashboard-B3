@@ -11,7 +11,7 @@ export interface AlertText {
 export function formatAlert(alert: FarmAlert, measures: Measures): AlertText {
   const { sensor } = alert
   if (alert.kind === 'sensor_silent' || sensor === 'device') {
-    return { title: 'Capteur muet', detail: "Plus de données de l'ESP32, mode sûr activé" }
+    return { title: 'Capteur muet', detail: 'Plus de données du Raspberry Pi, mode sûr activé' }
   }
 
   const { label, unit } = SENSOR_META[sensor]
