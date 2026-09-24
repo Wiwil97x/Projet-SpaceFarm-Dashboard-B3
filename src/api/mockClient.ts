@@ -28,11 +28,12 @@ export type MockClient = ApiClient & { dispose(): void }
 const BASELINE: Record<SensorKey, number> = {
   temperature: 21.5,
   humidity: 60,
-  luminosity: 12_400,
+  // Realistic for a small grow-light box (BH1750/photoresistor), not direct sunlight.
+  luminosity: 3200,
   soilMoisture: 72,
 }
-const NOISE: Record<SensorKey, number> = { temperature: 0.15, humidity: 0.9, luminosity: 120, soilMoisture: 0.15 }
-const SWING: Record<SensorKey, number> = { temperature: 1.2, humidity: 4, luminosity: 300, soilMoisture: 1.5 }
+const NOISE: Record<SensorKey, number> = { temperature: 0.15, humidity: 0.9, luminosity: 45, soilMoisture: 0.15 }
+const SWING: Record<SensorKey, number> = { temperature: 1.2, humidity: 4, luminosity: 120, soilMoisture: 1.5 }
 
 const OVERHEAT_TARGET = 29
 const LOW_MOISTURE_TARGET = 12

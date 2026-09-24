@@ -13,7 +13,7 @@ export const SENSOR_KEYS: readonly SensorKey[] = ['temperature', 'humidity', 'lu
 export const SENSOR_META: Record<SensorKey, SensorMeta> = {
   temperature: { label: 'Température', unit: '°C', decimals: 1, scale: { min: 10, max: 35 } },
   humidity: { label: 'Humidité', unit: '%', decimals: 0, scale: { min: 0, max: 100 } },
-  luminosity: { label: 'Luminosité', unit: 'lx', decimals: 0, scale: { min: 0, max: 20000 } },
+  luminosity: { label: 'Luminosité', unit: 'lx', decimals: 0, scale: { min: 0, max: 8000 } },
   soilMoisture: { label: 'Humidité du sol', unit: '%', decimals: 0, scale: { min: 0, max: 100 } },
 }
 
