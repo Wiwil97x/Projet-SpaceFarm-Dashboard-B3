@@ -15,7 +15,7 @@ Interface web (dashboard) du projet SpaceFarm, Workshop EPSI B3 "Horizon 2080", 
 ## Ce que le front doit afficher et faire
 
 1. Cartes d'état en direct : température, humidité (air), luminosité, humidité du sol, état des ventilateurs (allumés/éteints, mode auto/manuel).
-2. Historique en courbes par mesure (Recharts) + zone prévue pour des iframes Grafana plus tard.
+2. Historique en courbes par mesure (Recharts). Pas d'intégration Grafana : décision d'équipe de ne pas lier le front à Grafana.
 3. Formulaire de seuils (min et max par mesure).
 4. Commande des ventilateurs : auto, on, off (déplacée dans le panneau latéral de commandes, voir Architecture page ci-dessous).
 5. Alertes : bannière rouge (seuil dépassé ou capteur muet) + alerte sonore, avec bouton "Activer le son" obligatoire (politique d'autoplay des navigateurs).

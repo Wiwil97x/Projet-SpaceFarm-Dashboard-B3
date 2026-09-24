@@ -16,7 +16,6 @@ function HistorySection({ thresholds }: HistorySectionProps) {
   const [sensor, setSensor] = useState<SensorKey>('temperature')
   const [range, setRange] = useState<HistoryRange>('1h')
   const { points, loading, error } = useHistory(sensor, range)
-  const grafanaUrl = import.meta.env.VITE_GRAFANA_URL
 
   return (
     <section
@@ -57,24 +56,6 @@ function HistorySection({ thresholds }: HistorySectionProps) {
       ) : (
         <HistoryChart sensor={sensor} points={points} range={thresholds?.[sensor] ?? { min: null, max: null }} />
       )}
-
-      <div className="flex flex-col gap-3 border-t border-line pt-6">
-        <p className="text-xs font-medium uppercase tracking-widest text-ink-400">Grafana</p>
-        {grafanaUrl ? (
-          <iframe
-            title="Tableau de bord Grafana"
-            src={grafanaUrl}
-            className="h-[400px] w-full rounded-lg border border-line"
-          />
-        ) : (
-          <div className="flex h-32 flex-col items-center justify-center gap-1 rounded-lg border border-dashed border-line-strong text-center">
-            <p className="text-sm text-ink-600">Emplacement réservé aux courbes Grafana</p>
-            <p className="text-xs text-ink-400">
-              Se remplit dès que le lien du serveur est fourni (variable VITE_GRAFANA_URL)
-            </p>
-          </div>
-        )}
-      </div>
     </section>
   )
 }
