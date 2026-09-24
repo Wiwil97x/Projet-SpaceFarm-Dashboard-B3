@@ -4,10 +4,11 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
-// GitHub Pages serves this project at /Projet-SpaceFarm-Dashboard-B3/, not the domain root,
-// so every asset URL needs that prefix. Vite dev server ignores `base` and still runs at /.
+// Root by default (Vercel, local preview). Only GitHub Pages needs a subpath prefix, since it
+// serves this project at /Projet-SpaceFarm-Dashboard-B3/ instead of the domain root; the Pages
+// workflow sets VITE_BASE_PATH for that build specifically.
 export default defineConfig({
-  base: '/Projet-SpaceFarm-Dashboard-B3/',
+  base: process.env.VITE_BASE_PATH ?? '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
